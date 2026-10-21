@@ -43,6 +43,11 @@ mkdir -p ~/.steam/sdk32 && ln -sf ~/steamcmd/linux32/steamclient.so ~/.steam/sdk
 ln -sf "$PWD/server/ctl.sh" ~/.local/bin/l4d2
 ```
 
+`install.sh` también compila `server/noclientipc.c` (necesita `clang` o `gcc` con `-m32`), que `start.sh`
+precarga en srcds. Sin él, el servidor se registra con el cliente de Steam abierto por `127.0.0.1:57343`:
+Steam lo toma por L4D2 en ejecución, se queda en "Stopping" y no deja abrir el juego. Los avisos
+`wrong ELF class: ELFCLASS32` en la consola son de los procesos de 64 bits que ignoran la precarga; son inofensivos.
+
 Día a día:
 
 ```bash

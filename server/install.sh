@@ -37,5 +37,10 @@ if [[ ! -f "$GAME/cfg/server.cfg" ]]; then
     cp "$ROOT/server/server.cfg" "$GAME/cfg/server.cfg"
 fi
 
+# Bloqueo del IPC con el cliente de Steam (ver server/noclientipc.c); se precarga desde start.sh
+CC="$(command -v clang || command -v gcc)"
+"$CC" -m32 -O2 -fPIC -shared -nostdlib -o "$L4D2_DIR/bin/noclientipc.so" "$ROOT/server/noclientipc.c" \
+    || echo "Aviso: no se pudo compilar noclientipc.so; Steam verá al servidor como L4D2 abierto." >&2
+
 cp "$ROOT"/plugins/*.smx "$GAME/addons/sourcemod/plugins/"
 echo "Listo: plugins copiados a $GAME/addons/sourcemod/plugins/"
